@@ -1,0 +1,16 @@
+<div class="container">
+    <h1>Task Manager</h1>
+    <div class="task-list" cdkDropList (cdkDropListDropped)="onDrop($event)">
+        @for (task of tasks; track $index) {
+            <div class="task-item" cdkDrag>
+                {{ task.name }}
+            </div>
+        } 
+    </div>
+
+    <h2>Create a New Task</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <formly-form [model]="model" [fields]="fields"></formly-form>
+      <button type="submit" mat-raised-button color="primary">Add Task</button>
+    </form>
+  </div>
