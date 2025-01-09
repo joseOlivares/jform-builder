@@ -1,0 +1,35 @@
+
+<div cdkDropListGroup>
+    <div class="row">
+        <div class="col-md-9 col-12 ">
+            <h1 class="text-center">Form Builder</h1>
+            <div
+            cdkDropList
+            [cdkDropListData]="selectedFields"
+            class="example-list form-area"
+            (cdkDropListDropped)="drop($event)">
+            @for (item of selectedFields; track item) {
+            <div class="example-box" cdkDrag cdkDragBoundary=".form-area">{{item?.name}}</div>
+            }
+        </div>
+        </div>
+        <div class="col-md-3 col-12 ">
+            <h1 class="text-center">Elements</h1>
+
+            <div
+            cdkDropList
+            [cdkDropListData]="availableFields" cdkDropListSortingDisabled
+            class="example-list">
+                @for (item of availableFields; track item) {
+                <div class="example-box" cdkDrag>{{item.name}}</div>
+                }
+            </div>
+            <!-- 
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <formly-form [model]="model" [fields]="availableFields"></formly-form>
+                <button type="submit" mat-raised-button color="primary">Add Task</button>
+            </form>
+            -->
+        </div>
+    </div>
+</div>
