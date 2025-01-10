@@ -91,3 +91,10 @@
     max-height: 350px;
     overflow-y: scroll;
   }
+
+  .drop-area{
+    min-height: 80px;
+    border: 2px dashed #83b4e2;
+    padding: 10px;
+    margin-bottom: 20px;    
+  }

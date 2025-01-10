@@ -39,11 +39,16 @@ export class FormBuilderComponent {
 
   selectedFields: FormlyFieldConfig[] = [];
 
+  fieldSecuencialNumber = 0;//leva el control del id de los fields
 
   drop(event: CdkDragDrop<any>) {
+    this.fieldSecuencialNumber++;
     if (event.previousContainer !== event.container) {
       const itemToCopy = event.previousContainer.data[event.previousIndex];
-      this.selectedFields.push({ ...itemToCopy }); //insertamos una copia del elemento seleccionado
+      this.selectedFields.push({ ...itemToCopy, key: `field_${this.fieldSecuencialNumber}` }); //insertamos una copia del elemento seleccionado
+      //actualizamos el model
+      this.model={...this.model, [`field_${this.fieldSecuencialNumber}`]: ''};
+
     }else{
       moveItemInArray(this.selectedFields, event.previousIndex, event.currentIndex);
     }
@@ -67,8 +72,16 @@ export class FormBuilderComponent {
     console.log(this.form.value);
   }
 
-  close(index: number) {
+  removeField(index: number) {
     this.selectedFields.splice(index, 1); // Removes the item from the array
+    delete this.model[`field_${index}`];
+  
+        // Refresh the model to reflect the current state of selectedFields
+        this.model = {};
+        this.selectedFields.forEach((field, idx) => {
+            this.model[`field_${idx}`] = ''; // Initialize each field in the model
+        });
+
   }
 
 

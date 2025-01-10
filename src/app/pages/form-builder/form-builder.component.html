@@ -3,18 +3,18 @@
     <div class="row">
         <div class="col-md-9 col-12 ">
             <h1 class="text-center">Form Builder</h1>
-            <div
-            cdkDropList
-            [cdkDropListData]="selectedFields"
-            class="example-list form-area"
-            (cdkDropListDropped)="drop($event)">
-            @for (item of selectedFields; track item; let i = $index) {
-            <div class="example-box" cdkDrag cdkDragBoundary=".form-area">
-                {{item?.name}}
-                <mat-icon class="close-icon pull-right" (click)="close(i)">close</mat-icon>
+            <div class="drop-area">
+                <div cdkDropList [cdkDropListData]="selectedFields" class="example-list form-area "
+                (cdkDropListDropped)="drop($event)">
+                    @for (item of selectedFields; track item; let i = $index) {
+                        <div class="example-box" cdkDrag cdkDragBoundary=".form-area">
+                            {{item?.name}}
+                            <mat-icon class="close-icon pull-right" (click)="removeField(i)">close</mat-icon>
+                        </div>
+                        }
+                </div>
             </div>
-            }
-        </div>
+
         </div>
         <div class="col-md-3 col-12 ">
             <h1 class="text-center">Elements</h1>
