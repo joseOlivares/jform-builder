@@ -13,10 +13,13 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyConfigModule } from '../../core/modules/formly.module';//modulo que creamos para la configuración de formly
 
 import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-form-builder',
-  imports: [CdkDropListGroup, CdkDropList, CdkDrag, FormlyConfigModule, DragDropModule, MatIconModule],
+  imports: [CdkDropListGroup, CdkDropList, CdkDrag, FormlyConfigModule, DragDropModule, MatIconModule,
+    CommonModule
+  ],
   templateUrl: './form-builder.component.html',
   styleUrl: './form-builder.component.scss'
 })
@@ -24,7 +27,7 @@ export class FormBuilderComponent {
 
 
   form = new FormGroup({});
-  model = { name: '', description: '' };
+  model : any = {};
 
   //Listado de elementos de formulario disponibles
   availableFields: FormlyFieldConfig[] = [
@@ -64,6 +67,9 @@ export class FormBuilderComponent {
     console.log(this.form.value);
   }
 
+  close(index: number) {
+    this.selectedFields.splice(index, 1); // Removes the item from the array
+  }
 
 
 }

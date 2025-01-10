@@ -8,8 +8,11 @@
             [cdkDropListData]="selectedFields"
             class="example-list form-area"
             (cdkDropListDropped)="drop($event)">
-            @for (item of selectedFields; track item) {
-            <div class="example-box" cdkDrag cdkDragBoundary=".form-area">{{item?.name}}</div>
+            @for (item of selectedFields; track item; let i = $index) {
+            <div class="example-box" cdkDrag cdkDragBoundary=".form-area">
+                {{item?.name}}
+                <mat-icon class="close-icon pull-right" (click)="close(i)">close</mat-icon>
+            </div>
             }
         </div>
         </div>
@@ -20,8 +23,11 @@
             cdkDropList
             [cdkDropListData]="availableFields" cdkDropListSortingDisabled
             class="example-list form-elements">
-                @for (item of availableFields; track item) {
-                <div class="example-box2 text-start" cdkDrag><mat-icon>{{item.props?.['icon']}}</mat-icon> <b class="ms-2">{{item.name}}</b></div>
+                @for (item of availableFields; track item;) {
+                    <div class="example-box2" cdkDrag>
+                        <mat-icon class="text-start">{{item.props?.['icon']}}</mat-icon>
+                         <b class="ms-2">{{item.name}}</b>
+                    </div>
                 }
             </div>
             <!-- 
@@ -30,6 +36,20 @@
                 <button type="submit" mat-raised-button color="primary">Add Task</button>
             </form>
             -->
+        </div>
+    </div>
+
+    <div class="row">
+        <h3>Form JSON</h3>
+        <div class="col-12 col-sm-4">
+            <div class="form-values">
+                <pre>{{selectedFields | json}}</pre>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <form [formGroup]="form">
+                <formly-form [fields]="selectedFields" [form]="form" [model]="model"></formly-form>
+            </form>
         </div>
     </div>
 </div>
