@@ -38,7 +38,7 @@
   }
   
   .cdk-drag-placeholder {
-    opacity: 0;
+    opacity: 0.5;
   }
   
   .cdk-drag-animating {
@@ -57,6 +57,14 @@
     cursor: grab;
   }
   
+  .source-list {
+    border: solid 1px #ccc;
+    min-height: 60px;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    display: block;
+  }
   .example-box2 {
     padding: 20px 10px;
     border-bottom: solid 1px #ccc;
@@ -99,3 +107,22 @@
     margin-bottom: 20px;    
   }
 
+  .custom-placeholder {
+    background: #ccc;
+    border: dotted 3px #999;
+    min-height: 60px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  /* Cambia el color cuando un elemento está sobre una lista */
+/*.cdk-drop-list-dragging {
+  background-color: #eef2ff;
+}*/
+
+
+  /*
+  .cdk-drop-list-dragging .example-box2:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  } */
+    
+ 

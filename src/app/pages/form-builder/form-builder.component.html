@@ -22,9 +22,10 @@
             <div
             cdkDropList
             [cdkDropListData]="availableFields" cdkDropListSortingDisabled
-            class="example-list form-elements">
+            class="source-list form-elements">
                 @for (item of availableFields; track item;) {
                     <div class="example-box2" cdkDrag>
+                        <div class="custom-placeholder" *cdkDragPlaceholder></div>
                         <mat-icon class="text-start">{{item.props?.['icon']}}</mat-icon>
                          <b class="ms-2">{{item.name}}</b>
                     </div>

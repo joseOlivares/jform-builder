@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import {
   CdkDragDrop,
   CdkDrag,
@@ -6,7 +6,10 @@ import {
   CdkDropListGroup,
   moveItemInArray,
   transferArrayItem,
-  DragDropModule
+  DragDropModule,
+  CdkDragExit,
+  CdkDragPlaceholder,
+  copyArrayItem
 } from '@angular/cdk/drag-drop'
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -18,10 +21,10 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-form-builder',
   imports: [CdkDropListGroup, CdkDropList, CdkDrag, FormlyConfigModule, DragDropModule, MatIconModule,
-    CommonModule
+    CommonModule, CdkDragPlaceholder
   ],
   templateUrl: './form-builder.component.html',
-  styleUrl: './form-builder.component.scss'
+  styleUrls: ['./form-builder.component.scss']
 })
 export class FormBuilderComponent {
 
@@ -41,13 +44,31 @@ export class FormBuilderComponent {
 
   fieldSecuencialNumber = 0;//leva el control del id de los fields
 
+  
+  constructor(private changeDetectorRef: ChangeDetectorRef) { }
+
   drop(event: CdkDragDrop<any>) {
     this.fieldSecuencialNumber++;
     if (event.previousContainer !== event.container) {
+      /*
       const itemToCopy = event.previousContainer.data[event.previousIndex];
       this.selectedFields.push({ ...itemToCopy, key: `field_${this.fieldSecuencialNumber}` }); //insertamos una copia del elemento seleccionado
+     */
+     copyArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+
+      //agregamos un key correlativo al elemento insertado
+      this.selectedFields[event.currentIndex].key = `field_${this.fieldSecuencialNumber}`;
+      this.selectedFields[event.currentIndex].id = `field_${this.fieldSecuencialNumber}`;
+     
       //actualizamos el model
       this.model={...this.model, [`field_${this.fieldSecuencialNumber}`]: ''};
+
+      this.changeDetectorRef.detectChanges();//para prevenir error al actualizar model
 
     }else{
       moveItemInArray(this.selectedFields, event.previousIndex, event.currentIndex);
