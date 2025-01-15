@@ -42,38 +42,49 @@ export class FormBuilderComponent {
 
   selectedFields: FormlyFieldConfig[] = [];
 
-  fieldSecuencialNumber = 0;//leva el control del id de los fields
+  fieldSecuencialNumber = 1;//leva el control del id de los fields
 
-  
+
   constructor(private changeDetectorRef: ChangeDetectorRef) { }
 
-  drop(event: CdkDragDrop<any>) {
-    this.fieldSecuencialNumber++;
-    if (event.previousContainer !== event.container) {
-      /*
-      const itemToCopy = event.previousContainer.data[event.previousIndex];
-      this.selectedFields.push({ ...itemToCopy, key: `field_${this.fieldSecuencialNumber}` }); //insertamos una copia del elemento seleccionado
-     */
-     copyArrayItem(
-        event.previousContainer.data,
+  onTargetDrop(event: CdkDragDrop<any>) {
+
+    if (event.previousContainer === event.container) {//si se mueve dentro del mismo contenedor
+      moveItemInArray(this.selectedFields, event.previousIndex, event.currentIndex);
+    }else{
+
+      // Create a copy of the item being dragged
+      const itemToCopy = { ...event.previousContainer.data[event.previousIndex] };
+      // Add the unique key property
+      itemToCopy.key = `field_${this.fieldSecuencialNumber}`;
+
+      // Increment the sequence number for the next item
+      this.fieldSecuencialNumber++;
+
+      // Add the item to the target array
+      copyArrayItem(
+        [itemToCopy], // Use the copied item with the new key
         event.container.data,
-        event.previousIndex,
-        event.currentIndex,
+        0,
+        event.currentIndex
       );
 
-      //agregamos un key correlativo al elemento insertado
-      this.selectedFields[event.currentIndex].key = `field_${this.fieldSecuencialNumber}`;
-      this.selectedFields[event.currentIndex].id = `field_${this.fieldSecuencialNumber}`;
-     
+      console.log('Previous conatiner data:', event.previousContainer.data);
+      console.log('Current conatiner data:', event.container.data);
+      console.log('Previous item:', event.previousContainer.data[event.previousIndex]);
+      console.log('Copied item:', event.container.data[event.currentIndex]);
+      console.log('Target Index:', event.currentIndex);
+      console.log('Previous Index:', event.previousIndex);
+      console.log('Selected Fields:', this.selectedFields);
+      console.log('Current conatiner data:', event.container.data);
+
       //actualizamos el model
       this.model={...this.model, [`field_${this.fieldSecuencialNumber}`]: ''};
 
       this.changeDetectorRef.detectChanges();//para prevenir error al actualizar model
-
-    }else{
-      moveItemInArray(this.selectedFields, event.previousIndex, event.currentIndex);
     }
 
+    console.log('Model:', this.model);
     //Este bloque mueve el elemnto de un lugar a otro
     /*
     if (event.previousContainer === event.container) {
@@ -88,6 +99,10 @@ export class FormBuilderComponent {
     }*/
   }
 
+  drop(event: CdkDragDrop<string[]>) {
+    console.log('Dropped', event);
+  }
+
 
   onSubmit() {
     console.log(this.form.value);
@@ -96,7 +111,7 @@ export class FormBuilderComponent {
   removeField(index: number) {
     this.selectedFields.splice(index, 1); // Removes the item from the array
     delete this.model[`field_${index}`];
-  
+
         // Refresh the model to reflect the current state of selectedFields
         this.model = {};
         this.selectedFields.forEach((field, idx) => {

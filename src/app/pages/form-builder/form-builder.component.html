@@ -5,8 +5,8 @@
             <h1 class="text-center">Form Builder</h1>
             <div class="drop-area">
                 <div cdkDropList [cdkDropListData]="selectedFields" class="example-list form-area "
-                (cdkDropListDropped)="drop($event)">
-                    @for (item of selectedFields; track item; let i = $index) {
+                (cdkDropListDropped)="onTargetDrop($event)">
+                    @for (item of selectedFields; track item.key; let i = $index) {
                         <div class="example-box" cdkDrag cdkDragBoundary=".form-area">
                             {{item?.name}}
                             <mat-icon class="close-icon pull-right" (click)="removeField(i)">close</mat-icon>
